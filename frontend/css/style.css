@@ -44,3 +44,39 @@ button {
 
     font-size: 16px;
 }
+
+button#capture {
+    background-color: #007BFF;
+    color: white;
+}
+
+#message {
+    display: block;
+    margin-top: 20px;
+    padding: 15px;
+
+    text-align: center;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    border-radius: 8px;
+}
+
+#message.success {
+    color: green;
+    background-color: #dff6df;
+    border: 2px solid green;
+}
+
+#message.error {
+    color: red;
+    background-color: #ffe0e0;
+    border: 2px solid red;
+}
+
+#message.processing {
+    color: blue;
+    background-color: #e0ecff;
+    border: 2px solid blue;
+}

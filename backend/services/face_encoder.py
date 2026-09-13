@@ -3,8 +3,6 @@ import pickle
 
 import face_recognition
 
-from database.db import get_connection
-
 
 ENCODINGS_FILE = os.path.join(
     os.path.dirname(os.path.dirname(__file__)),
@@ -13,56 +11,34 @@ ENCODINGS_FILE = os.path.join(
 )
 
 
-DATASET_FOLDER = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)),
-    "dataset",
-    "registered_faces"
-)
-
-
 def generate_student_encoding(student_id, image_path):
-    """
-    Generate a face encoding for one student.
 
-    Returns:
-        encoding if a face is found
-        None if no face is found
-    """
+    image = face_recognition.load_image_file(
+        image_path
+    )
 
-    # Load image
-    image = face_recognition.load_image_file(image_path)
+    encodings = face_recognition.face_encodings(
+        image
+    )
 
-    # Detect faces and generate encodings
-    encodings = face_recognition.face_encodings(image)
-
-    # No face
     if len(encodings) == 0:
         return None
 
-    # More than one face
     if len(encodings) > 1:
         raise ValueError(
-            "Multiple faces detected. "
-            "Only one face should be present."
+            "Multiple faces detected. Please show only one face."
         )
 
-    # First and only face
-    encoding = encodings[0]
-
-    return encoding
+    return encodings[0]
 
 
 def save_encoding(student_id, encoding):
-    """
-    Save student's face encoding.
-    """
 
     os.makedirs(
         os.path.dirname(ENCODINGS_FILE),
         exist_ok=True
     )
 
-    # Load existing encodings
     if os.path.exists(ENCODINGS_FILE):
 
         with open(
@@ -80,9 +56,9 @@ def save_encoding(student_id, encoding):
         }
 
 
-    # Remove old encoding for this student
-    new_encodings = []
-    new_student_ids = []
+    filtered_encodings = []
+    filtered_ids = []
+
 
     for existing_encoding, existing_id in zip(
         data["encodings"],
@@ -91,23 +67,27 @@ def save_encoding(student_id, encoding):
 
         if existing_id != student_id:
 
-            new_encodings.append(
+            filtered_encodings.append(
                 existing_encoding
             )
 
-            new_student_ids.append(
+            filtered_ids.append(
                 existing_id
             )
 
 
-    # Add new encoding
-    new_encodings.append(encoding)
-    new_student_ids.append(student_id)
+    filtered_encodings.append(
+        encoding
+    )
+
+    filtered_ids.append(
+        student_id
+    )
 
 
     data = {
-        "encodings": new_encodings,
-        "student_ids": new_student_ids
+        "encodings": filtered_encodings,
+        "student_ids": filtered_ids
     }
 
 
@@ -126,20 +106,19 @@ def create_encoding_for_student(
     student_id,
     image_path
 ):
-    """
-    Generate and save encoding for a student.
-    """
 
     encoding = generate_student_encoding(
         student_id,
         image_path
     )
 
+
     if encoding is None:
 
         return {
             "success": False,
-            "message": "No face detected."
+            "message":
+                "No face detected. Please make sure your face is clearly visible."
         }
 
 
@@ -151,5 +130,6 @@ def create_encoding_for_student(
 
     return {
         "success": True,
-        "message": "Face encoding created successfully."
+        "message":
+            "Face encoding created successfully."
     }

@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Register Student</title>
+    <title>Register Student - Face Attendance</title>
 
     <link rel="stylesheet" href="css/style.css">
 
@@ -16,51 +16,139 @@
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h1>Register Student</h1>
+        <h1>Register Student</h1>
 
-    <br>
+        <p>
+            Register a student using face recognition
+        </p>
 
-    <input
-        type="text"
-        id="name"
-        placeholder="Enter Student Name"
-    >
 
-    <br><br>
+        <!-- Student Name -->
 
-    <input
-        type="text"
-        id="roll"
-        placeholder="Enter Roll Number"
-    >
+        <div class="form-group">
 
-    <br><br>
+            <label for="name">
+                Student Name
+            </label>
 
-    <video
-        id="video"
-        width="400"
-        height="300"
-        autoplay>
-    </video>
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter student name"
+                autocomplete="off"
+            >
 
-    <br><br>
+        </div>
 
-    <button id="capture">
-        Capture Face
-    </button>
 
-    <canvas
-        id="canvas"
-        style="display:none;">
-    </canvas>
+        <!-- Roll Number -->
 
-    <p id="message"></p>
+        <div class="form-group">
 
-</div>
+            <label for="roll">
 
-<script src="js/register.js"></script>
+                Roll Number
+
+            </label>
+
+            <input
+                type="text"
+                id="roll"
+                placeholder="Enter roll number"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <!-- Camera -->
+
+        <div class="camera-container">
+
+            <video
+                id="video"
+                width="500"
+                height="375"
+                autoplay
+                playsinline>
+            </video>
+
+        </div>
+
+
+        <!-- Capture Button -->
+
+        <button
+            type="button"
+            id="capture">
+
+            Capture & Register
+
+        </button>
+
+
+        <!-- Hidden Canvas -->
+
+        <canvas
+            id="canvas"
+            width="500"
+            height="375"
+            style="display: none;">
+        </canvas>
+
+
+        <!-- Status Message -->
+
+        <div
+            id="message"
+            class="message">
+
+        </div>
+
+
+        <!-- Student Information -->
+
+        <div
+            id="studentInfo"
+            class="student-info"
+            style="display: none;">
+
+            <h3>Registration Successful</h3>
+
+            <p>
+                <strong>Name:</strong>
+                <span id="registeredName"></span>
+            </p>
+
+            <p>
+                <strong>Roll Number:</strong>
+                <span id="registeredRoll"></span>
+            </p>
+
+            <p>
+                <strong>Student ID:</strong>
+                <span id="registeredId"></span>
+            </p>
+
+        </div>
+
+
+        <!-- Back Button -->
+
+        <button
+            type="button"
+            onclick="window.location.href='index.html'">
+
+            Back to Home
+
+        </button>
+
+    </div>
+
+
+    <script src="js/register.js"></script>
 
 </body>
 

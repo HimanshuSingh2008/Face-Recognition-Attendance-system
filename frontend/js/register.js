@@ -1,342 +1,498 @@
+// ==========================================
+// ELEMENTS
+// ==========================================
+
 const video = document.getElementById("video");
-const message = document.getElementById("message");
+
+const canvas = document.getElementById("canvas");
+
+const captureButton =
+    document.getElementById("capture");
+
+const nameInput =
+    document.getElementById("name");
+
+const rollInput =
+    document.getElementById("roll");
+
+const message =
+    document.getElementById("message");
+
+const studentInfo =
+    document.getElementById("studentInfo");
+
+const registeredName =
+    document.getElementById("registeredName");
+
+const registeredRoll =
+    document.getElementById("registeredRoll");
+
+const registeredId =
+    document.getElementById("registeredId");
+
+
+// ==========================================
+// CAMERA STREAM
+// ==========================================
+
+let cameraStream = null;
 
 
 // ==========================================
 // START CAMERA
 // ==========================================
 
-navigator.mediaDevices.getUserMedia({
-    video: {
-        width: 640,
-        height: 480
-    }
-})
-.then(function (stream) {
+async function startCamera() {
 
-    video.srcObject = stream;
+    try {
 
-})
-.catch(function (error) {
+        cameraStream =
+            await navigator.mediaDevices.getUserMedia({
 
-    console.error("Camera error:", error);
+                video: {
+                    width: {
+                        ideal: 640
+                    },
 
-    message.innerText = "Unable to access camera.";
-    message.style.color = "red";
+                    height: {
+                        ideal: 480
+                    },
 
-});
+                    facingMode: "user"
 
+                },
 
-// ==========================================
-// CAPTURE FACE / REGISTER STUDENT
-// ==========================================
+                audio: false
 
-document
-    .getElementById("capture")
-    .addEventListener("click", async function () {
-
-        // ==========================================
-        // GET FORM VALUES
-        // ==========================================
-
-        const name = document
-            .getElementById("name")
-            .value
-            .trim();
-
-        const rollNumber = document
-            .getElementById("roll")
-            .value
-            .trim();
+            });
 
 
-        // ==========================================
-        // VALIDATE NAME
-        // ==========================================
-
-        if (!name) {
-
-            message.innerText =
-                "Please enter student name.";
-
-            message.style.color = "red";
-
-            return;
-        }
+        video.srcObject =
+            cameraStream;
 
 
-        if (name.length < 2) {
-
-            message.innerText =
-                "Name must contain at least 2 characters.";
-
-            message.style.color = "red";
-
-            return;
-        }
-
-
-        // ==========================================
-        // VALIDATE ROLL NUMBER
-        // ==========================================
-
-        if (!rollNumber) {
-
-            message.innerText =
-                "Please enter roll number.";
-
-            message.style.color = "red";
-
-            return;
-        }
-
-
-        // ==========================================
-        // CHECK CAMERA
-        // ==========================================
-
-        if (!video.srcObject) {
-
-            message.innerText =
-                "Camera is not available.";
-
-            message.style.color = "red";
-
-            return;
-        }
-
-
-        // ==========================================
-        // CAPTURE IMAGE FROM VIDEO
-        // ==========================================
-
-        const canvas =
-            document.getElementById("canvas");
-
-        const context =
-            canvas.getContext("2d");
-
-
-        canvas.width =
-            video.videoWidth || 640;
-
-        canvas.height =
-            video.videoHeight || 480;
-
-
-        context.drawImage(
-            video,
-            0,
-            0,
-            canvas.width,
-            canvas.height
+        console.log(
+            "Camera started successfully."
         );
 
 
-        // ==========================================
-        // CONVERT IMAGE TO BASE64
-        // ==========================================
+    }
 
-        const image =
-            canvas.toDataURL(
-                "image/jpeg",
-                0.9
-            );
+    catch (error) {
 
-
-        // ==========================================
-        // SHOW PROCESSING MESSAGE
-        // ==========================================
-
-        message.innerText =
-            "Registering student...";
-
-        message.style.color = "blue";
+        console.error(
+            "Camera Error:",
+            error
+        );
 
 
-        // Disable button while processing
-        const captureButton =
-            document.getElementById("capture");
+        showMessage(
+            "Unable to access camera. Please allow camera permission.",
+            "error"
+        );
 
-        captureButton.disabled = true;
+    }
+
+}
+
+
+// ==========================================
+// STOP CAMERA
+// ==========================================
+
+function stopCamera() {
+
+    if (cameraStream) {
+
+        cameraStream
+            .getTracks()
+            .forEach(function(track) {
+
+                track.stop();
+
+            });
+
+    }
+
+}
+
+
+// ==========================================
+// SHOW MESSAGE
+// ==========================================
+
+function showMessage(
+    text,
+    type = ""
+) {
+
+    message.innerText = text;
+
+    message.className =
+        "message " + type;
+
+}
+
+
+// ==========================================
+// CLEAR MESSAGE
+// ==========================================
+
+function clearMessage() {
+
+    message.innerText = "";
+
+    message.className = "message";
+
+}
+
+
+// ==========================================
+// VALIDATE FORM
+// ==========================================
+
+function validateForm() {
+
+    const name =
+        nameInput.value.trim();
+
+    const rollNumber =
+        rollInput.value.trim();
+
+
+    // Name validation
+
+    if (!name) {
+
+        showMessage(
+            "Please enter student name.",
+            "error"
+        );
+
+        nameInput.focus();
+
+        return false;
+
+    }
+
+
+    if (name.length < 2) {
+
+        showMessage(
+            "Student name must contain at least 2 characters.",
+            "error"
+        );
+
+        nameInput.focus();
+
+        return false;
+
+    }
+
+
+    // Roll validation
+
+    if (!rollNumber) {
+
+        showMessage(
+            "Please enter roll number.",
+            "error"
+        );
+
+        rollInput.focus();
+
+        return false;
+
+    }
+
+
+    return true;
+
+}
+
+
+// ==========================================
+// CAPTURE IMAGE
+// ==========================================
+
+function captureImage() {
+
+    const context =
+        canvas.getContext("2d");
+
+
+    if (
+        video.videoWidth === 0 ||
+        video.videoHeight === 0
+    ) {
+
+        showMessage(
+            "Camera is not ready. Please wait.",
+            "error"
+        );
+
+        return null;
+
+    }
+
+
+    canvas.width =
+        video.videoWidth;
+
+    canvas.height =
+        video.videoHeight;
+
+
+    context.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    return canvas.toDataURL(
+        "image/jpeg",
+        0.90
+    );
+
+}
+
+
+// ==========================================
+// REGISTER STUDENT
+// ==========================================
+
+async function registerStudent() {
+
+    clearMessage();
+
+
+    // Validate form
+
+    if (!validateForm()) {
+
+        return;
+
+    }
+
+
+    // Disable button
+
+    captureButton.disabled = true;
+
+    captureButton.innerText =
+        "Processing...";
+
+
+    showMessage(
+        "Capturing face...",
+        "loading"
+    );
+
+
+    // Capture image
+
+    const image =
+        captureImage();
+
+
+    if (!image) {
+
+        captureButton.disabled = false;
 
         captureButton.innerText =
-            "Registering...";
+            "Capture & Register";
+
+        return;
+
+    }
 
 
-        // ==========================================
-        // SEND DATA TO FLASK
-        // ==========================================
+    const name =
+        nameInput.value.trim();
 
-        try {
-
-            const response =
-                await fetch(
-                    "http://127.0.0.1:5000/api/students/register",
-                    {
-                        method: "POST",
-
-                        headers: {
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body: JSON.stringify({
-
-                            name: name,
-
-                            roll_number:
-                                rollNumber,
-
-                            image: image
-
-                        })
-                    }
-                );
+    const rollNumber =
+        rollInput.value.trim();
 
 
-            // ==========================================
-            // GET SERVER RESPONSE
-            // ==========================================
+    try {
 
-            console.log(
-                "HTTP Status:",
-                response.status
+        showMessage(
+            "Sending image to server...",
+            "loading"
+        );
+
+
+        // ==================================
+        // SEND TO FLASK
+        // ==================================
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/api/students/register",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        name: name,
+
+                        roll_number:
+                            rollNumber,
+
+                        image: image
+
+                    })
+
+                }
             );
 
 
-            const result =
-                await response.json();
+        console.log(
+            "HTTP Status:",
+            response.status
+        );
 
 
-            console.log(
-                "Server response:",
-                result
+        // ==================================
+        // READ SERVER RESPONSE
+        // ==================================
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Server Response:",
+            result
+        );
+
+
+        // ==================================
+        // SUCCESS
+        // ==================================
+
+        if (
+            response.ok &&
+            result.success
+        ) {
+
+            showMessage(
+                "Student registered successfully!",
+                "success"
             );
 
 
-            // ==========================================
-            // SUCCESS
-            // ==========================================
+            // Display student information
 
-            if (
-                response.ok &&
-                result.success === true
-            ) {
+            if (result.student) {
 
-                message.innerText =
-                    result.message ||
-                    "Student registered successfully!";
+                registeredName.innerText =
+                    result.student.name;
 
-                message.style.color =
-                    "green";
+                registeredRoll.innerText =
+                    result.student.roll_number;
 
+                registeredId.innerText =
+                    result.student.id;
 
-                console.log(
-                    "Student registered successfully:"
-                );
-
-                console.log(
-                    "Student ID:",
-                    result.student_id
-                );
-
-                console.log(
-                    "Name:",
-                    result.name
-                );
-
-                console.log(
-                    "Roll Number:",
-                    result.roll_number
-                );
-
-
-                // ==========================================
-                // CLEAR FORM
-                // ==========================================
-
-                document
-                    .getElementById("name")
-                    .value = "";
-
-                document
-                    .getElementById("roll")
-                    .value = "";
-
-
-                // ==========================================
-                // OPTIONAL: CLEAR CANVAS
-                // ==========================================
-
-                context.clearRect(
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
-                );
+                studentInfo.style.display =
+                    "block";
 
             }
 
 
-            // ==========================================
-            // SERVER RETURNED ERROR
-            // ==========================================
+            // Clear input fields
 
-            else {
+            nameInput.value = "";
 
-                message.innerText =
-                    result.message ||
-                    "Student registration failed.";
-
-                message.style.color =
-                    "red";
+            rollInput.value = "";
 
 
-                console.error(
-                    "Registration failed:",
-                    result
-                );
-
-            }
-
+            // Keep camera running
+            // so another student can register
 
         }
 
 
-        // ==========================================
-        // CONNECTION ERROR
-        // ==========================================
+        // ==================================
+        // ERROR
+        // ==================================
 
-        catch (error) {
+        else {
 
-            console.error(
-                "Registration error:",
-                error
+            showMessage(
+
+                result.message ||
+                "Student registration failed.",
+
+                "error"
+
             );
 
-
-            message.innerText =
-                "Unable to connect to server.";
-
-            message.style.color =
-                "red";
-
         }
 
 
-        // ==========================================
-        // ENABLE BUTTON AGAIN
-        // ==========================================
+    }
 
-        finally {
+    catch (error) {
 
-            captureButton.disabled =
-                false;
+        console.error(
+            "Registration Error:",
+            error
+        );
 
-            captureButton.innerText =
-                "Capture Face";
 
-        }
+        showMessage(
+            "Unable to connect to the Flask server. Make sure the backend is running.",
+            "error"
+        );
 
-    });
+    }
+
+
+    // Enable button again
+
+    captureButton.disabled = false;
+
+    captureButton.innerText =
+        "Capture & Register";
+
+}
+
+
+// ==========================================
+// BUTTON EVENT
+// ==========================================
+
+captureButton.addEventListener(
+    "click",
+    registerStudent
+);
+
+
+// ==========================================
+// START CAMERA WHEN PAGE LOADS
+// ==========================================
+
+startCamera();
+
+
+// ==========================================
+// STOP CAMERA WHEN PAGE CLOSES
+// ==========================================
+
+window.addEventListener(
+    "beforeunload",
+    stopCamera
+);

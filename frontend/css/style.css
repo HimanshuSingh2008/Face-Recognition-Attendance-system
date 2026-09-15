@@ -80,3 +80,65 @@ button#capture {
     background-color: #e0ecff;
     border: 2px solid blue;
 }
+
+/* ==========================================
+   REGISTRATION PAGE
+========================================== */
+
+.form-group {
+    margin: 15px 0;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+
+    border: 1px solid #ccc;
+    border-radius: 6px;
+
+    font-size: 16px;
+}
+
+.camera-container {
+    margin: 20px 0;
+}
+
+.camera-container video {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.message {
+    margin-top: 20px;
+
+    min-height: 30px;
+
+    font-size: 18px;
+
+    font-weight: bold;
+}
+
+.student-info {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border-radius: 10px;
+
+    background: #f0fff4;
+
+    border: 1px solid #90ee90;
+
+    text-align: left;
+}
+
+.student-info h2 {
+    color: green;
+}

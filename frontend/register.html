@@ -2,16 +2,13 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Register Student - Face Attendance</title>
+    <title>Register Student</title>
 
     <link rel="stylesheet" href="css/style.css">
-
 </head>
 
 <body>
@@ -20,9 +17,7 @@
 
         <h1>Register Student</h1>
 
-        <p>
-            Register a student using face recognition
-        </p>
+        <p>Register a student using face recognition</p>
 
 
         <!-- Student Name -->
@@ -33,12 +28,7 @@
                 Student Name
             </label>
 
-            <input
-                type="text"
-                id="name"
-                placeholder="Enter student name"
-                autocomplete="off"
-            >
+            <input type="text" id="name" placeholder="Enter student name">
 
         </div>
 
@@ -48,74 +38,50 @@
         <div class="form-group">
 
             <label for="roll">
-
                 Roll Number
-
             </label>
 
-            <input
-                type="text"
-                id="roll"
-                placeholder="Enter roll number"
-                autocomplete="off"
-            >
+            <input type="text" id="roll" placeholder="Enter roll number">
 
         </div>
 
 
-        <!-- Camera -->
+        <!-- Webcam -->
 
         <div class="camera-container">
 
-            <video
-                id="video"
-                width="500"
-                height="375"
-                autoplay
-                playsinline>
+            <video id="video" width="500" height="375" autoplay playsinline>
             </video>
 
         </div>
 
 
-        <!-- Capture Button -->
+        <!-- Capture -->
 
-        <button
-            type="button"
-            id="capture">
+        <button type="button" id="capture">
 
             Capture & Register
 
         </button>
 
 
-        <!-- Hidden Canvas -->
+        <!-- Canvas -->
 
-        <canvas
-            id="canvas"
-            width="500"
-            height="375"
-            style="display: none;">
+        <canvas id="canvas" style="display:none;">
         </canvas>
 
 
-        <!-- Status Message -->
+        <!-- IMPORTANT -->
 
-        <div
-            id="message"
-            class="message">
-
+        <div id="message" class="message">
         </div>
 
 
-        <!-- Student Information -->
+        <!-- SUCCESS INFORMATION -->
 
-        <div
-            id="studentInfo"
-            class="student-info"
-            style="display: none;">
+        <div id="studentInfo" class="student-info" style="display:none;">
 
-            <h3>Registration Successful</h3>
+            <h2>Registration Successful</h2>
 
             <p>
                 <strong>Name:</strong>
@@ -135,11 +101,9 @@
         </div>
 
 
-        <!-- Back Button -->
+        <br>
 
-        <button
-            type="button"
-            onclick="window.location.href='index.html'">
+        <button type="button" onclick="window.location.href='index.html'">
 
             Back to Home
 
@@ -147,6 +111,8 @@
 
     </div>
 
+
+    <!-- VERY IMPORTANT -->
 
     <script src="js/register.js"></script>
 

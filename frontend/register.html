@@ -2,25 +2,266 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Register Student</title>
+    <title>Student Registration</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px 0;
+
+            min-height: 100vh;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f7fb;
+
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+
+            width: 90%;
+            max-width: 700px;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, 0.12);
+
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            color: #222;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+
+            color: #333;
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+        }
+
+        .camera-container {
+
+            width: 100%;
+
+            display: flex;
+
+            justify-content: center;
+
+            margin: 20px 0;
+        }
+
+        video {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            height: 375px;
+
+            object-fit: cover;
+
+            background: #111;
+
+            border-radius: 12px;
+
+            border: 3px solid #ddd;
+
+            transform: scaleX(-1);
+        }
+
+        button {
+
+            border: none;
+
+            padding: 13px 25px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin: 5px;
+
+            background: #2563eb;
+
+            color: white;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+
+            background: #999;
+
+            cursor: not-allowed;
+        }
+
+        #homeButton {
+
+            background: #555;
+        }
+
+        #homeButton:hover {
+
+            background: #333;
+        }
+
+        #message {
+
+            margin-top: 20px;
+
+            padding: 12px;
+
+            min-height: 45px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+        #message.success {
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+        #message.error {
+
+            background: #fee2e2;
+
+            color: #991b1b;
+        }
+
+        #message.processing {
+
+            background: #e0f2fe;
+
+            color: #075985;
+        }
+
+        .student-info {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            background: #ecfdf5;
+
+            border: 1px solid #86efac;
+
+            text-align: left;
+        }
+
+        .student-info h2 {
+
+            margin-top: 0;
+
+            color: #166534;
+
+            text-align: center;
+        }
+
+        .student-info p {
+
+            margin: 10px 0;
+
+            color: #333;
+        }
+
+        .camera-error {
+
+            margin-top: 10px;
+
+            color: #b91c1c;
+
+            font-size: 14px;
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
     <div class="container">
 
-        <h1>Register Student</h1>
+        <h1>Student Registration</h1>
 
-        <p>Register a student using face recognition</p>
+        <p class="subtitle">
+            Register a student using Face Recognition
+        </p>
+
+        <!-- MESSAGE -->
+
+        <div
+            id="message"
+            aria-live="polite"
+        ></div>
 
 
-        <!-- Student Name -->
+        <!-- NAME -->
 
         <div class="form-group">
 
@@ -28,60 +269,97 @@
                 Student Name
             </label>
 
-            <input type="text" id="name" placeholder="Enter student name">
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter student name"
+                autocomplete="off"
+            >
 
         </div>
 
 
-        <!-- Roll Number -->
+        <!-- ROLL NUMBER -->
 
         <div class="form-group">
 
             <label for="roll">
+
                 Roll Number
+
             </label>
 
-            <input type="text" id="roll" placeholder="Enter roll number">
+            <input
+                type="text"
+                id="roll"
+                placeholder="Enter roll number"
+                autocomplete="off"
+            >
 
         </div>
 
 
-        <!-- Webcam -->
+        <!-- CAMERA -->
 
         <div class="camera-container">
 
-            <video id="video" width="500" height="375" autoplay playsinline>
-            </video>
+            <video
+                id="video"
+                autoplay
+                muted
+                playsinline
+            ></video>
 
         </div>
 
 
-        <!-- Capture -->
+        <!-- CAMERA ERROR -->
 
-        <button type="button" id="capture">
+        <div
+            id="cameraError"
+            class="camera-error"
+        ></div>
 
+
+        <!-- CAPTURE BUTTON -->
+
+        <button
+            type="button"
+            id="capture"
+        >
             Capture & Register
-
         </button>
 
 
-        <!-- Canvas -->
+        <!-- HOME BUTTON -->
 
-        <canvas id="canvas" style="display:none;">
-        </canvas>
+        <button
+            type="button"
+            id="homeButton"
+        >
+            Back to Home
+        </button>
 
 
-        <!-- IMPORTANT -->
+        <!-- CANVAS -->
 
-        <div id="message" class="message">
-        </div>
+        <canvas
+            id="canvas"
+            style="display: none;"
+        ></canvas>
 
 
         <!-- SUCCESS INFORMATION -->
 
-        <div id="studentInfo" class="student-info" style="display:none;">
+        <div
+            id="studentInfo"
+            class="student-info"
+            hidden
+        >
 
-            <h2>Registration Successful</h2>
+            <h2>
+                Registration Successful
+            </h2>
 
             <p>
                 <strong>Name:</strong>
@@ -100,19 +378,10 @@
 
         </div>
 
-
-        <br>
-
-        <button type="button" onclick="window.location.href='index.html'">
-
-            Back to Home
-
-        </button>
-
     </div>
 
 
-    <!-- VERY IMPORTANT -->
+    <!-- JAVASCRIPT -->
 
     <script src="js/register.js"></script>
 

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Face Recognition</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            padding: 30px 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f7fb;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: flex-start;
+
+        }
+
+
+        .container {
+
+            width: 90%;
+
+            max-width: 700px;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.12);
+
+            text-align: center;
+
+        }
+
+
+        h1 {
+
+            margin-bottom: 8px;
+
+            color: #222;
+
+        }
+
+
+        .subtitle {
+
+            color: #666;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .camera-container {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin: 20px 0;
+
+        }
+
+
+        video {
+
+            width: 100%;
+
+            max-width: 500px;
+
+            height: 375px;
+
+            object-fit: cover;
+
+            background: #111;
+
+            border-radius: 12px;
+
+            border: 3px solid #ddd;
+
+            transform: scaleX(-1);
+
+        }
+
+
+        button {
+
+            border: none;
+
+            padding: 13px 25px;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            margin: 5px;
+
+            background: #2563eb;
+
+            color: white;
+
+        }
+
+
+        button:hover {
+
+            background: #1d4ed8;
+
+        }
+
+
+        button:disabled {
+
+            background: #999;
+
+            cursor: not-allowed;
+
+        }
+
+
+        #result {
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            min-height: 45px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+        }
+
+
+        #result.success {
+
+            background: #dcfce7;
+
+            color: #166534;
+
+        }
+
+
+        #result.error {
+
+            background: #fee2e2;
+
+            color: #991b1b;
+
+        }
+
+
+        #result.processing {
+
+            background: #e0f2fe;
+
+            color: #075985;
+
+        }
+
+
+        .student-card {
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            background: #ecfdf5;
+
+            border: 1px solid #86efac;
+
+            border-radius: 10px;
+
+            text-align: left;
+
+        }
+
+
+        .student-card h2 {
+
+            margin-top: 0;
+
+            color: #166534;
+
+            text-align: center;
+
+        }
+
+
+        .student-card p {
+
+            margin: 10px 0;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <h1>
+            Face Recognition
+        </h1>
+
+
+        <p class="subtitle">
+            Position your face in front of the camera
+        </p>
+
+
+        <!-- CAMERA -->
+
+        <div class="camera-container">
+
+            <video
+                id="video"
+                autoplay
+                muted
+                playsinline
+            ></video>
+
+        </div>
+
+
+        <!-- BUTTON -->
+
+        <button
+            type="button"
+            id="recognize"
+        >
+
+            Recognize Face
+
+        </button>
+
+
+        <button
+            type="button"
+            id="homeButton"
+        >
+
+            Back to Home
+
+        </button>
+
+
+        <!-- HIDDEN CANVAS -->
+
+        <canvas
+            id="canvas"
+            style="display:none;"
+        ></canvas>
+
+
+        <!-- RESULT -->
+
+        <div
+            id="result"
+            aria-live="polite"
+        ></div>
+
+
+        <!-- STUDENT -->
+
+        <div
+            id="studentCard"
+            class="student-card"
+            hidden
+        >
+
+            <h2>
+                Student Recognized
+            </h2>
+
+
+            <p>
+
+                <strong>
+                    Name:
+                </strong>
+
+                <span
+                    id="studentName"
+                ></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Roll Number:
+                </strong>
+
+                <span
+                    id="studentRoll"
+                ></span>
+
+            </p>
+
+
+            <p>
+
+                <strong>
+                    Student ID:
+                </strong>
+
+                <span
+                    id="studentId"
+                ></span>
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+    <script src="js/attendance.js"></script>
+
+
+</body>
+
+</html>

@@ -4,53 +4,200 @@ import pickle
 import face_recognition
 
 
+# ==========================================
+# ENCODINGS FILE
+# ==========================================
+
 ENCODINGS_FILE = os.path.join(
-    os.path.dirname(os.path.dirname(__file__)),
+
+    os.path.dirname(
+        os.path.dirname(__file__)
+    ),
+
     "encodings",
+
     "face_encodings.pkl"
+
 )
 
 
+# ==========================================
+# RECOGNIZE FACE
+# ==========================================
+
 def recognize_face(image_path):
 
-    # Check whether encodings exist
-    if not os.path.exists(ENCODINGS_FILE):
+    # --------------------------------------
+    # CHECK ENCODINGS FILE
+    # --------------------------------------
+
+    if not os.path.exists(
+        ENCODINGS_FILE
+    ):
 
         return {
+
             "success": False,
+
             "status": "no_data",
-            "message": "No registered faces found."
+
+            "message":
+                "No registered faces found."
+
         }
 
 
-    # Load known encodings
-    with open(
-        ENCODINGS_FILE,
-        "rb"
-    ) as file:
+    # --------------------------------------
+    # LOAD ENCODINGS
+    # --------------------------------------
 
-        data = pickle.load(file)
+    try:
 
+        with open(
+            ENCODINGS_FILE,
+            "rb"
+        ) as file:
 
-    if len(data["encodings"]) == 0:
+            data = pickle.load(file)
+
+    except Exception as error:
+
+        print(
+            "Encoding load error:",
+            error
+        )
 
         return {
+
             "success": False,
-            "status": "no_data",
-            "message": "No registered faces found."
+
+            "status": "encoding_error",
+
+            "message":
+                "Unable to load face encodings."
+
         }
 
 
-    # Load captured image
-    image = face_recognition.load_image_file(
-        image_path
-    )
+    # --------------------------------------
+    # CHECK DATA
+    # --------------------------------------
+
+    encodings = data.get("encodings", [])
 
 
-    # Detect and encode faces
+    student_ids = data.get("student_ids", [])
+
+
+    if not encodings:
+
+        return {
+
+            "success": False,
+
+            "status": "no_data",
+
+            "message":
+                "No registered faces found."
+
+        }
+
+
+    if len(encodings) != len(
+        student_ids
+    ):
+
+        return {
+
+            "success": False,
+
+            "status": "encoding_error",
+
+            "message":
+                "Face encoding data is invalid."
+
+        }
+
+
+    # --------------------------------------
+    # LOAD CAPTURED IMAGE
+    # --------------------------------------
+
+    try:
+
+        image = face_recognition.load_image_file(
+                image_path
+            )
+
+    except Exception as error:
+
+        print(
+            "Image loading error:",
+            error
+        )
+
+        return {
+
+            "success": False,
+
+            "status": "invalid_image",
+
+            "message":
+                "Unable to load captured image."
+
+        }
+
+
+    # --------------------------------------
+    # DETECT FACES
+    # --------------------------------------
+
     face_locations = (
-        face_recognition.face_locations(image)
+        face_recognition.face_locations(
+            image
+        )
     )
+
+
+    # --------------------------------------
+    # NO FACE
+    # --------------------------------------
+
+    if len(face_locations) == 0:
+
+        return {
+
+            "success": False,
+
+            "status": "no_face",
+
+            "message":
+                "No face detected. Please position your face clearly."
+
+        }
+
+
+    # --------------------------------------
+    # MULTIPLE FACES
+    # --------------------------------------
+
+    if len(face_locations) > 1:
+
+        return {
+
+            "success": False,
+
+            "status": "multiple_faces",
+
+            "message":
+                "Multiple faces detected. Please show only one face."
+
+        }
+
+
+    # --------------------------------------
+    # GENERATE ENCODING
+    # --------------------------------------
 
     face_encodings = (
         face_recognition.face_encodings(
@@ -60,53 +207,81 @@ def recognize_face(image_path):
     )
 
 
-    # No face
     if len(face_encodings) == 0:
 
         return {
+
             "success": False,
-            "status": "no_face",
-            "message": "No face detected."
-        }
 
+            "status": "encoding_failed",
 
-    # Multiple faces
-    if len(face_encodings) > 1:
+            "message":
+                "Unable to generate face encoding."
 
-        return {
-            "success": False,
-            "status": "multiple_faces",
-            "message": "Multiple faces detected. Please show only one face."
         }
 
 
     captured_encoding = face_encodings[0]
 
 
-    # Compare against known faces
-    distances = face_recognition.face_distance(
-        data["encodings"],
-        captured_encoding
+    # --------------------------------------
+    # CALCULATE DISTANCES
+    # --------------------------------------
+
+    distances = (
+        face_recognition.face_distance(
+
+            encodings,
+
+            captured_encoding
+
+        )
     )
 
 
-    # Find closest face
+    if len(distances) == 0:
+
+        return {
+
+            "success": False,
+
+            "status": "no_data",
+
+            "message":
+                "No face encodings available."
+
+        }
+
+
+    # --------------------------------------
+    # BEST MATCH
+    # --------------------------------------
+
     best_match_index = distances.argmin()
+
 
     best_distance = float(
         distances[best_match_index]
     )
 
 
-    # Recognition threshold
+    # --------------------------------------
+    # RECOGNITION THRESHOLD
+    # --------------------------------------
+
     TOLERANCE = 0.50
 
 
+    # --------------------------------------
+    # MATCH
+    # --------------------------------------
+
     if best_distance <= TOLERANCE:
 
-        student_id = data["student_ids"][
+        student_id = student_ids[
             best_match_index
         ]
+
 
         return {
 
@@ -114,12 +289,18 @@ def recognize_face(image_path):
 
             "status": "recognized",
 
-            "student_id": int(student_id),
+            "student_id":
+                int(student_id),
 
-            "distance": best_distance
+            "distance":
+                best_distance
 
         }
 
+
+    # --------------------------------------
+    # UNKNOWN FACE
+    # --------------------------------------
 
     return {
 
@@ -127,8 +308,10 @@ def recognize_face(image_path):
 
         "status": "unknown",
 
-        "message": "Face not recognized.",
+        "message":
+            "Face not recognized.",
 
-        "distance": best_distance
+        "distance":
+            best_distance
 
     }

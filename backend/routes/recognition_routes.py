@@ -1,3 +1,4 @@
+
 import os
 import base64
 import uuid
@@ -8,6 +9,10 @@ import numpy as np
 from flask import Blueprint, request, jsonify
 
 from database.db import get_connection
+
+from services.attendance_service import (
+    mark_attendance
+)
 
 from services.face_recognition_service import (
     recognize_face
@@ -60,9 +65,9 @@ def recognize_student():
         # GET REQUEST DATA
         # ==================================
 
-        data = request.get_json()
+        data = request.get_json(silent=True)
 
-        if not data:
+        if not isinstance(data, dict):
 
             return jsonify({
 
@@ -79,7 +84,7 @@ def recognize_student():
         image_data = data.get("image")
 
 
-        if not image_data:
+        if not isinstance(image_data, str) or not image_data.strip():
 
             return jsonify({
 
@@ -109,7 +114,8 @@ def recognize_student():
 
 
             image_bytes = base64.b64decode(
-                image_data
+                image_data,
+                validate=True
             )
 
 
@@ -215,9 +221,8 @@ def recognize_student():
         # GET STUDENT ID
         # ==================================
 
-        student_id = result.get(
-            "student_id"
-        )
+        student_id = result["student_id"]
+        attendance_result = mark_attendance(student_id)
 
 
         if student_id is None:
@@ -240,27 +245,27 @@ def recognize_student():
 
         connection = get_connection()
 
-        cursor = connection.cursor()
+        try:
 
+            cursor = connection.cursor()
 
-        cursor.execute(
-            """
-            SELECT
-                id,
-                name,
-                roll_number,
-                image_path
-            FROM students
-            WHERE id = ?
-            """,
-            (student_id,)
-        )
+            cursor.execute(
+                """
+                SELECT
+                    id,
+                    name,
+                    roll_number
+                FROM students
+                WHERE id = ?
+                """,
+                (student_id,)
+            )
 
+            student = cursor.fetchone()
 
-        student = cursor.fetchone()
+        finally:
 
-
-        connection.close()
+            connection.close()
 
 
         # ==================================
@@ -279,6 +284,42 @@ def recognize_student():
                     "Face matched, but student record was not found."
 
             }), 404
+
+
+        # ==================================
+        # MARK ATTENDANCE
+        # ==================================
+
+        attendance_result = mark_attendance(
+            student_id
+        )
+
+        if not attendance_result.get("success"):
+
+            return jsonify({
+
+                "success": False,
+
+                "status": "attendance_error",
+
+                "message": attendance_result.get(
+                    "message",
+                    "Unable to mark attendance."
+                ),
+
+                "student": {
+
+                    "id": student["id"],
+
+                    "name": student["name"],
+
+                    "roll_number": student["roll_number"]
+
+                },
+
+                "attendance": attendance_result
+
+            }), 500
 
 
         # ==================================
@@ -308,7 +349,9 @@ def recognize_student():
             },
 
             "distance":
-                result.get("distance")
+                result.get("distance"),
+
+            "attendance": attendance_result
 
         }), 200
 

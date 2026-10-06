@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Attendance Records</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        Attendance Records
+    </h1>
+
+    <p>
+        View all recorded attendance
+    </p>
+
+
+    <button
+        type="button"
+        id="refreshButton"
+    >
+        Refresh Records
+    </button>
+
+
+    <br><br>
+
+
+    <div
+        id="message"
+    ></div>
+
+
+    <div class="table-container">
+
+        <table
+            id="attendanceTable"
+        >
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Roll Number
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Time
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody
+                id="attendanceBody"
+            >
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script src="js/records.js"></script>
+
+</body>
+
+</html>

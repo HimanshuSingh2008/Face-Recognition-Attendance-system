@@ -377,6 +377,34 @@ async function recognizeStudent() {
             );
 
 
+            const attendance =
+                data.attendance;
+
+
+            if (
+                attendance &&
+                attendance.status === "marked"
+            ) {
+
+                showResult(
+                    "Attendance marked successfully!",
+                    "success"
+                );
+
+            }
+            else if (
+                attendance &&
+                attendance.status === "already_marked"
+            ) {
+
+                showResult(
+                    "Attendance already marked for today.",
+                    "processing"
+                );
+
+            }
+
+
             const student =
                 data.student;
 

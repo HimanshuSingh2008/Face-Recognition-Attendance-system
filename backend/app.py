@@ -3,25 +3,22 @@ from flask_cors import CORS
 
 from routes.student__routes import student_bp
 
+from routes.attendance_routes import (
+    attendance_bp
+)
+
 from routes.recognition_routes import (
     recognition_bp
 )
 
-# ==========================================
-# CREATE FLASK APP
-# ==========================================
 
 app = Flask(__name__)
-
-# ==========================================
-# ENABLE CORS
-# ==========================================
 
 CORS(app)
 
 
 # ==========================================
-# REGISTER BLUEPRINTS
+# REGISTER ROUTES
 # ==========================================
 
 app.register_blueprint(
@@ -29,12 +26,16 @@ app.register_blueprint(
 )
 
 app.register_blueprint(
+    attendance_bp
+)
+
+app.register_blueprint(
     recognition_bp
 )
 
 
 # ==========================================
-# HOME API
+# HOME
 # ==========================================
 
 @app.route("/")
@@ -45,13 +46,13 @@ def home():
         "status": "success",
 
         "message":
-            "Face Recognition Attendance API is running."
+            "Face Recognition Attendance API is running"
 
     })
 
 
 # ==========================================
-# RUN SERVER
+# RUN
 # ==========================================
 
 if __name__ == "__main__":

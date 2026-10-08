@@ -1,174 +1,753 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Attendance Dashboard</title>
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Attendance Management System - Administration Portal</title>
+    
+    <!-- Standard Clean Inter Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Enterprise Design System -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+    <div class="app-layout">
+        
+        <!-- ==============================================================
+             LEFT SIDEBAR (ENTERPRISE ADMIN NAVIGATION)
+             ============================================================== -->
+        <aside class="app-sidebar" id="appSidebar">
+            <!-- Brand & Institutional Logo -->
+            <div class="sidebar-brand">
+                <div class="brand-icon-wrapper">
+                    <!-- Clean Graduation / Institution Icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">CampusAttend</span>
+                    <span class="brand-badge">Academic Portal</span>
+                </div>
+            </div>
 
-<div class="container">
+            <!-- Navigation Links -->
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Main Menu</div>
 
-    <h1>
-        Attendance Dashboard
-    </h1>
+                <button type="button" class="nav-item active" data-target="view-dashboard" id="navDashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    <span>Dashboard</span>
+                </button>
 
-    <p>
-        Face Recognition Attendance System
-    </p>
+                <button type="button" class="nav-item" data-target="view-camera" id="navCamera">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    <span>Face Recognition</span>
+                </button>
+
+                <button type="button" class="nav-item" data-target="view-students" id="navStudents">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>Students</span>
+                </button>
+
+                <button type="button" class="nav-item" data-target="view-records" id="navRecords">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    <span>Attendance Records</span>
+                </button>
+
+                <div class="nav-section-title">Administration</div>
+
+                <button type="button" class="nav-item" data-target="view-register" id="navRegister">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    <span>Register Student</span>
+                </button>
+
+                <button type="button" class="nav-item" onclick="exportAllRecordsCSV()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    <span>Reports & Export</span>
+                </button>
+
+                <button type="button" class="nav-item" onclick="showToast('System configuration: SQLite Local DB, Flask Engine 127.0.0.1:5000', 'info')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    <span>Settings</span>
+                </button>
+            </nav>
+
+            <!-- Bottom User & Status Profile -->
+            <div class="sidebar-footer">
+                <div class="user-profile-badge">
+                    <div class="user-avatar">ADM</div>
+                    <div class="user-info">
+                        <span class="user-name">Department Admin</span>
+                        <span class="user-role">
+                            <span class="user-status-dot"></span>
+                            <span>System Active</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ==============================================================
+             MAIN WORKSPACE
+             ============================================================== -->
+        <main class="app-main">
+            <!-- Top Sticky Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <button type="button" class="menu-toggle-btn" id="menuToggleBtn" aria-label="Toggle navigation">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div class="page-breadcrumb">
+                        <span>Attendance System</span>
+                        <span>/</span>
+                        <span class="current" id="currentSectionTitle">Dashboard</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="system-status-indicator">
+                        <span class="status-dot"></span>
+                        <span id="apiStatusText">Connected to 127.0.0.1:5000</span>
+                    </div>
+
+                    <div class="live-clock" id="liveClockDisplay">--:--:--</div>
+
+                    <button type="button" class="btn btn-secondary" id="refreshDashboard" title="Refresh dashboard data">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"></path>
+                        </svg>
+                        <span>Refresh</span>
+                    </button>
+
+                    <button type="button" class="btn btn-primary" onclick="switchView('view-camera')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <span>Take Attendance</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Feedback & Toast Container -->
+            <div id="dashboardMessage" style="display: none;"></div>
+            <div class="toast-container" id="toastContainer"></div>
+
+            <!-- Page Viewport Content -->
+            <div class="content-viewport">
+                
+                <!-- ==============================================================
+                     VIEW 1: DASHBOARD (OVERVIEW & ANALYTICS)
+                     ============================================================== -->
+                <section class="view-section active-view" id="view-dashboard">
+                    <div class="page-header-block">
+                        <div>
+                            <h1 class="page-title">Attendance Overview</h1>
+                            <p class="page-description">Real-time attendance metrics, institutional rate analytics, and today's verification ledger.</p>
+                        </div>
+                        <div class="header-action-group">
+                            <span style="font-size: 0.8rem; color: var(--color-text-muted);" id="currentDateDisplay">Today's Session</span>
+                            <button type="button" class="btn btn-secondary" onclick="exportTodayCSV()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span>Export Today's CSV</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4 ENTERPRISE KPI CARDS (Structured, flat, subtle border) -->
+                    <div class="kpi-grid">
+                        
+                        <!-- 1. Total Students -->
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Total Students</span>
+                                <div class="kpi-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="totalStudents">0</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-indicator neutral">Enrolled in active semester</span>
+                            </div>
+                        </div>
+
+                        <!-- 2. Present Today -->
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Present Today</span>
+                                <div class="kpi-icon" style="color: var(--color-success); background-color: var(--color-success-bg);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="presentToday" style="color: var(--color-success);">0</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-indicator positive" id="presentContextLabel">Verified via face recognition</span>
+                            </div>
+                        </div>
+
+                        <!-- 3. Absent Today -->
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Absent Today</span>
+                                <div class="kpi-icon" style="color: var(--color-danger); background-color: var(--color-danger-bg);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="absentToday" style="color: var(--color-danger);">0</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-indicator neutral" id="absentContextLabel">Unverified / not marked</span>
+                            </div>
+                        </div>
+
+                        <!-- 4. Attendance Rate -->
+                        <div class="kpi-card">
+                            <div class="kpi-header">
+                                <span class="kpi-label">Attendance Rate</span>
+                                <div class="kpi-icon" style="color: var(--color-primary); background-color: var(--color-primary-light);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="kpi-body">
+                                <span class="kpi-value" id="attendanceRate">0</span>
+                                <span class="kpi-unit">%</span>
+                            </div>
+                            <div class="kpi-footer">
+                                <span class="kpi-indicator positive" id="rateContextLabel">Above institutional benchmark (75%)</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- ATTENDANCE ANALYTICS SECTION (DATA READABILITY OVER FLASHINESS) -->
+                    <div class="analytics-section-grid">
+                        <!-- Chart: Attendance Verification Distribution -->
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <div>
+                                    <h2 class="panel-title">Today's Attendance Status Distribution</h2>
+                                    <span class="panel-subtitle">Proportional breakdown of present vs absent student population</span>
+                                </div>
+                                <span style="font-size: 0.75rem; font-family: var(--font-mono); color: var(--color-text-muted);" id="analyticsDateBadge">Live Data</span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="chart-container">
+                                    <div class="chart-bars-wrap">
+                                        <!-- Bar 1: Total Enrolled -->
+                                        <div class="chart-bar-group">
+                                            <span class="chart-bar-value" id="chartTotalVal">0</span>
+                                            <div class="chart-bar-track">
+                                                <div class="chart-bar-fill" id="chartTotalBar" style="height: 100%;"></div>
+                                            </div>
+                                            <span class="chart-bar-label">Total Enrolled</span>
+                                        </div>
+
+                                        <!-- Bar 2: Present Today -->
+                                        <div class="chart-bar-group">
+                                            <span class="chart-bar-value" id="chartPresentVal">0</span>
+                                            <div class="chart-bar-track">
+                                                <div class="chart-bar-fill success" id="chartPresentBar" style="height: 0%;"></div>
+                                            </div>
+                                            <span class="chart-bar-label">Present</span>
+                                        </div>
+
+                                        <!-- Bar 3: Absent Today -->
+                                        <div class="chart-bar-group">
+                                            <span class="chart-bar-value" id="chartAbsentVal">0</span>
+                                            <div class="chart-bar-track">
+                                                <div class="chart-bar-fill danger" id="chartAbsentBar" style="height: 0%;"></div>
+                                            </div>
+                                            <span class="chart-bar-label">Absent</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="chart-legend">
+                                        <div class="legend-item">
+                                            <span class="legend-color" style="background-color: var(--color-primary);"></span>
+                                            <span>Enrolled Students</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-color" style="background-color: var(--color-success);"></span>
+                                            <span>Verified Present</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-color" style="background-color: var(--color-danger);"></span>
+                                            <span>Unmarked / Absent</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Info Panel: Operational Metrics -->
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <h2 class="panel-title">System Metrics</h2>
+                                <span class="panel-subtitle">Institutional status</span>
+                            </div>
+                            <div class="panel-body">
+                                <div class="breakdown-list">
+                                    <div class="breakdown-item">
+                                        <div class="breakdown-row">
+                                            <span class="breakdown-label">Overall Compliance Rate</span>
+                                            <span class="breakdown-val" id="metricComplianceVal">0%</span>
+                                        </div>
+                                        <div class="breakdown-bar">
+                                            <div class="breakdown-fill" id="metricComplianceBar" style="width: 0%; background-color: var(--color-primary);"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="breakdown-item">
+                                        <div class="breakdown-row">
+                                            <span class="breakdown-label">Historical Scans Logged</span>
+                                            <span class="breakdown-val" id="totalRecords">0</span>
+                                        </div>
+                                        <div class="breakdown-bar">
+                                            <div class="breakdown-fill" style="width: 100%; background-color: #64748b;"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="breakdown-item">
+                                        <div class="breakdown-row">
+                                            <span class="breakdown-label">Biometric Model Encodings</span>
+                                            <span class="breakdown-val">128-D Euclidean</span>
+                                        </div>
+                                        <span style="font-size: 0.725rem; color: var(--color-text-muted);">Tolerance threshold: 0.50</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ATTENDANCE TABLE (PRIMARY DATA COMPONENT) -->
+                    <div class="data-table-wrapper">
+                        <div class="table-toolbar">
+                            <div>
+                                <h3 style="font-size: 0.95rem; font-weight: 600; color: var(--color-text-primary);">Today's Attendance Logs</h3>
+                                <p style="font-size: 0.75rem; color: var(--color-text-muted);">Real-time stream of verified student check-ins for the current session</p>
+                            </div>
+
+                            <div class="table-filters">
+                                <div class="table-search-input">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                    <input type="text" id="todaySearchInput" placeholder="Search by name or roll number...">
+                                </div>
+
+                                <button type="button" class="btn btn-secondary" onclick="exportTodayCSV()" title="Export to CSV">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                        <polyline points="7 10 12 15 17 10"></polyline>
+                                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                                    </svg>
+                                    <span>Export CSV</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th onclick="sortTodayTable('name')">Student Name <span class="sort-icon">↕</span></th>
+                                        <th onclick="sortTodayTable('roll_number')">Roll Number <span class="sort-icon">↕</span></th>
+                                        <th onclick="sortTodayTable('attendance_time')">Check-in Time <span class="sort-icon">↕</span></th>
+                                        <th onclick="sortTodayTable('status')">Status <span class="sort-icon">↕</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="todayAttendanceBody">
+                                    <tr>
+                                        <td colspan="4" class="table-empty-row">
+                                            <div class="empty-state-content">
+                                                <div class="spinner-clean" style="border-color: #cbd5e1; border-top-color: var(--color-primary); width: 24px; height: 24px;"></div>
+                                                <span>Loading attendance records...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
 
 
-    <!-- =====================================
-         DASHBOARD CARDS
-    ====================================== -->
+                <!-- ==============================================================
+                     VIEW 2: FACE RECOGNITION (CLEAN BIOMETRIC SYSTEM)
+                     ============================================================== -->
+                <section class="view-section" id="view-camera">
+                    <div class="page-header-block">
+                        <div>
+                            <h1 class="page-title">Face Recognition Biometric Station</h1>
+                            <p class="page-description">Automated identity verification and attendance check-in using facial recognition.</p>
+                        </div>
+                    </div>
 
-    <div class="dashboard-cards">
+                    <div class="camera-layout-grid">
+                        <!-- Camera Card -->
+                        <div class="camera-card">
+                            <div class="camera-card-header">
+                                <span class="camera-header-title">Live Camera Feed</span>
+                                <div class="status-badge present" id="cameraStatusBadge">
+                                    <span class="badge-dot"></span>
+                                    <span id="cameraStatusLabel">Camera Active</span>
+                                </div>
+                            </div>
 
-        <div class="dashboard-card">
+                            <!-- Clean Biometric Camera Viewport -->
+                            <div class="camera-feed-viewport" id="cameraStage">
+                                <!-- Subtle Face Framing Guide Box -->
+                                <div class="face-alignment-box" id="faceReticle"></div>
 
-            <h3>
-                Total Students
-            </h3>
+                                <video id="video" autoplay muted playsinline></video>
+                                <canvas id="canvas" style="display: none;"></canvas>
+                            </div>
 
-            <p
-                id="totalStudents"
-            >
-                0
-            </p>
+                            <!-- Camera Controls Bar -->
+                            <div class="camera-controls-bar">
+                                <button type="button" class="btn btn-primary" id="recognize" style="flex: 2;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+                                        <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                                        <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+                                        <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+                                    </svg>
+                                    <span id="recognizeBtnText">Capture & Verify Face</span>
+                                </button>
 
-        </div>
+                                <button type="button" class="btn btn-secondary" id="toggleCameraBtn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M23 4v6h-6M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                                    </svg>
+                                    <span>Reset Camera</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Recognition Status & Result Readout -->
+                        <div class="verification-panel">
+                            <div class="camera-card-header">
+                                <span class="camera-header-title">Verification Result</span>
+                            </div>
+
+                            <!-- Status message callout -->
+                            <div class="status-callout-clean" id="result" aria-live="polite">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                <span id="resultText">Position student in front of camera and click Capture & Verify Face.</span>
+                            </div>
+
+                            <!-- Verified Student Readout Card (Preserving all IDs) -->
+                            <div class="verified-record-box" id="studentCard" hidden>
+                                <div class="verified-header">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                    <span id="attendanceConfirmationStatus">Attendance Recorded</span>
+                                </div>
+
+                                <div class="verified-profile-row">
+                                    <div class="verified-avatar-box" id="recognizedAvatar">
+                                        <span id="recognizedInitials">ST</span>
+                                    </div>
+                                    <div>
+                                        <div class="verified-name" id="studentName">Student Name</div>
+                                        <div class="verified-roll">Roll No: <span id="studentRoll">0000</span></div>
+                                    </div>
+                                </div>
+
+                                <div class="verified-meta-grid">
+                                    <div class="verified-meta-item">
+                                        <span class="label">System ID</span>
+                                        <span class="value" id="studentId">#0</span>
+                                    </div>
+                                    <div class="verified-meta-item">
+                                        <span class="label">Time Verified</span>
+                                        <span class="value" id="recognizedTimestamp">--:--:--</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
 
-        <div class="dashboard-card">
+                <!-- ==============================================================
+                     VIEW 3: STUDENTS (CLEAN DIRECTORY CARDS)
+                     ============================================================== -->
+                <section class="view-section" id="view-students">
+                    <div class="page-header-block">
+                        <div>
+                            <h1 class="page-title">Student Directory</h1>
+                            <p class="page-description">Registered students, academic departments, and cumulative attendance records.</p>
+                        </div>
 
-            <h3>
-                Present Today
-            </h3>
+                        <div class="header-action-group">
+                            <div class="table-search-input" style="min-width: 280px;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                </svg>
+                                <input type="text" id="studentCardsSearchInput" placeholder="Search by name or roll number...">
+                            </div>
 
-            <p
-                id="presentToday"
-            >
-                0
-            </p>
+                            <button type="button" class="btn btn-secondary" onclick="loadStudentCards()">
+                                <span>Reload</span>
+                            </button>
 
-        </div>
+                            <button type="button" class="btn btn-primary" onclick="switchView('view-register')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                <span>Add Student</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="font-size: 0.8rem; color: var(--color-text-muted); margin-bottom: 16px;" id="studentsCountLabel">
+                        Loading student records...
+                    </div>
+
+                    <!-- Clean Structured Student Cards Grid -->
+                    <div class="students-grid-wrapper" id="students3DGrid">
+                        <!-- Populated dynamically via loadStudentCards() -->
+                    </div>
+                </section>
 
 
-        <div class="dashboard-card">
+                <!-- ==============================================================
+                     VIEW 4: ATTENDANCE RECORDS (LEDGER & REPORTS)
+                     ============================================================== -->
+                <section class="view-section" id="view-records">
+                    <div class="page-header-block">
+                        <div>
+                            <h1 class="page-title">Attendance Records & Ledger</h1>
+                            <p class="page-description">Complete historical ledger of all student check-in transactions.</p>
+                        </div>
 
-            <h3>
-                Attendance Rate
-            </h3>
+                        <div class="header-action-group">
+                            <button type="button" class="btn btn-secondary" onclick="exportAllRecordsCSV()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                <span>Download CSV Report</span>
+                            </button>
 
-            <p>
-                <span id="attendanceRate">
-                    0
-                </span>%
-            </p>
+                            <button type="button" class="btn btn-secondary" onclick="loadAllAttendanceRecords()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"></path>
+                                </svg>
+                                <span>Refresh</span>
+                            </button>
+                        </div>
+                    </div>
 
-        </div>
+                    <div class="data-table-wrapper">
+                        <div class="table-toolbar">
+                            <div>
+                                <span style="font-size: 0.85rem; font-weight: 500; color: var(--color-text-secondary);" id="allRecordsCountSummary">
+                                    Loading records...
+                                </span>
+                            </div>
 
+                            <div class="table-filters">
+                                <div class="table-search-input">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                    </svg>
+                                    <input type="text" id="allRecordsSearchInput" placeholder="Filter records by keyword...">
+                                </div>
+
+                                <select class="filter-select" id="allRecordsStatusFilter">
+                                    <option value="ALL">All Statuses</option>
+                                    <option value="Present">Present Only</option>
+                                    <option value="Absent">Absent Only</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="admin-table" id="allAttendanceTable">
+                                <thead>
+                                    <tr>
+                                        <th onclick="sortAllRecordsTable('name')">Student Name <span class="sort-icon">↕</span></th>
+                                        <th onclick="sortAllRecordsTable('roll_number')">Roll Number <span class="sort-icon">↕</span></th>
+                                        <th onclick="sortAllRecordsTable('attendance_date')">Date <span class="sort-icon">↕</span></th>
+                                        <th onclick="sortAllRecordsTable('attendance_time')">Time <span class="sort-icon">↕</span></th>
+                                        <th onclick="sortAllRecordsTable('status')">Status <span class="sort-icon">↕</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="allAttendanceBody">
+                                    <tr>
+                                        <td colspan="5" class="table-empty-row">
+                                            <div class="empty-state-content">
+                                                <div class="spinner-clean" style="border-color: #cbd5e1; border-top-color: var(--color-primary); width: 24px; height: 24px;"></div>
+                                                <span>Loading attendance ledger...</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- ==============================================================
+                     VIEW 5: REGISTER STUDENT (ADMINISTRATIVE FORM)
+                     ============================================================== -->
+                <section class="view-section" id="view-register">
+                    <div class="page-header-block">
+                        <div>
+                            <h1 class="page-title">Register New Student</h1>
+                            <p class="page-description">Enroll student credentials and capture facial biometric encoding.</p>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 980px;">
+                        <!-- Form Card -->
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Student Credentials</h2>
+                            </div>
+                            <div class="panel-body">
+                                <form id="enrollmentForm" onsubmit="return false;">
+                                    <div class="form-group-clean">
+                                        <label for="enrollName">Student Full Name</label>
+                                        <input type="text" id="enrollName" placeholder="e.g. John Doe" autocomplete="off" required>
+                                    </div>
+
+                                    <div class="form-group-clean">
+                                        <label for="enrollRoll">Roll Number / Enrollment ID</label>
+                                        <input type="text" id="enrollRoll" placeholder="e.g. CS2026-042" autocomplete="off" required>
+                                    </div>
+
+                                    <div class="status-callout-clean" id="enrollMessage" style="margin-bottom: 16px;">
+                                        <span id="enrollMessageText">Ensure student is looking at camera and click Capture & Register.</span>
+                                    </div>
+
+                                    <button type="button" class="btn btn-primary" id="captureAndRegisterBtn" style="width: 100%;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                            <circle cx="12" cy="13" r="4"></circle>
+                                        </svg>
+                                        <span id="captureBtnLabel">Capture & Register Face</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Camera Preview Card -->
+                        <div class="panel-card">
+                            <div class="panel-header">
+                                <h2 class="panel-title">Biometric Capture Preview</h2>
+                            </div>
+                            <div class="panel-body">
+                                <div class="camera-feed-viewport" style="max-height: 280px; margin-bottom: 14px;">
+                                    <video id="enrollVideo" autoplay muted playsinline></video>
+                                    <canvas id="enrollCanvas" style="display: none;"></canvas>
+                                    <div class="face-alignment-box"></div>
+                                </div>
+
+                                <!-- Success Notification Card -->
+                                <div class="verified-record-box" id="enrollSuccessCard" hidden>
+                                    <div class="verified-header">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                        <span>Student Enrolled Successfully</span>
+                                    </div>
+                                    <div style="font-size: 0.85rem; color: var(--color-text-secondary);">
+                                        <strong id="enrolledStudentName" style="color: var(--color-text-primary);">Name</strong>
+                                        <span style="margin: 0 6px;">•</span>
+                                        Roll: <span id="enrolledStudentRoll">--</span>
+                                        <div style="margin-top: 4px; font-size: 0.75rem; color: var(--color-text-muted);">
+                                            Database Record ID: #<span id="enrolledStudentId">--</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
     </div>
 
-
-    <br>
-
-
-    <!-- =====================================
-         CONTROLS
-    ====================================== -->
-
-    <button
-        type="button"
-        id="refreshDashboard"
-    >
-        Refresh Dashboard
-    </button>
-
-
-    <button
-        type="button"
-        onclick="location.href='index.html'"
-    >
-        Home
-    </button>
-
-
-    <br><br>
-
-
-    <div
-        id="dashboardMessage"
-    ></div>
-
-
-    <!-- =====================================
-         TODAY'S ATTENDANCE
-    ====================================== -->
-
-    <h2>
-        Today's Attendance
-    </h2>
-
-
-    <div class="table-container">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Name
-                    </th>
-
-                    <th>
-                        Roll Number
-                    </th>
-
-                    <th>
-                        Time
-                    </th>
-
-                    <th>
-                        Status
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody
-                id="todayAttendanceBody"
-            >
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</div>
-
-
-<script src="js/dashboard.js"></script>
-
+    <!-- Core Interactive Application Controller -->
+    <script src="js/dashboard.js"></script>
 </body>
-
+</html>
 </html>

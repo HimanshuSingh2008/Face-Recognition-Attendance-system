@@ -163,6 +163,13 @@ def dashboard():
     else:
         attendance_rate = 0
 
+    # Total attendance records in history
+    cursor.execute("""
+        SELECT COUNT(*) AS total_records
+        FROM attendance
+    """)
+    total_records = cursor.fetchone()["total_records"]
+
     # Today's attendance records
     cursor.execute("""
         SELECT
@@ -181,11 +188,15 @@ def dashboard():
 
     connection.close()
 
+    absent_today = max(0, total_students - present_today)
+
     return jsonify({
         "success": True,
         "date": today,
         "total_students": total_students,
         "present_today": present_today,
+        "absent_today": absent_today,
+        "total_records": total_records,
         "attendance_rate": round(attendance_rate, 2),
         "records": [dict(record) for record in records]
     })

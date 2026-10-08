@@ -5,7 +5,7 @@ import re
 import cv2
 import numpy as np
 
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, send_from_directory
 
 from database.db import get_connection
 
@@ -462,3 +462,104 @@ def register_student():
                 "Something went wrong during registration."
 
         }), 500
+
+
+# ==========================================
+# GET ALL STUDENTS (FOR 3D CARDS / DIRECTORY)
+# ==========================================
+
+@student_bp.route("/", methods=["GET"])
+@student_bp.route("/list", methods=["GET"])
+def get_all_students():
+
+    try:
+        from datetime import datetime
+
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        today = datetime.now().strftime("%Y-%m-%d")
+
+        cursor.execute("""
+            SELECT COUNT(DISTINCT attendance_date) AS total_days
+            FROM attendance
+        """)
+        total_days_row = cursor.fetchone()
+        total_days = total_days_row["total_days"] if total_days_row and total_days_row["total_days"] else 0
+
+        cursor.execute("""
+            SELECT
+                s.id,
+                s.name,
+                s.roll_number,
+                s.image_path,
+                s.created_at,
+                (SELECT COUNT(*) FROM attendance a WHERE a.student_id = s.id AND a.status = 'Present') AS present_days,
+                (SELECT status FROM attendance a WHERE a.student_id = s.id AND a.attendance_date = ?) AS today_status,
+                (SELECT attendance_time FROM attendance a WHERE a.student_id = s.id AND a.attendance_date = ?) AS today_time,
+                (SELECT attendance_time FROM attendance a WHERE a.student_id = s.id ORDER BY a.attendance_date DESC, a.attendance_time DESC LIMIT 1) AS last_time,
+                (SELECT attendance_date FROM attendance a WHERE a.student_id = s.id ORDER BY a.attendance_date DESC, a.attendance_time DESC LIMIT 1) AS last_date
+            FROM students s
+            ORDER BY s.id DESC
+        """, (today, today))
+
+        rows = cursor.fetchall()
+        connection.close()
+
+        students = []
+        for r in rows:
+            p_days = r["present_days"] or 0
+            pct = round((p_days / total_days * 100), 1) if total_days > 0 else 100.0
+            filename = os.path.basename(r["image_path"]) if r["image_path"] else ""
+            
+            # Format last attendance string
+            if r["today_status"] == "Present" and r["today_time"]:
+                last_attended = f"Today at {r['today_time']}"
+            elif r["last_date"] and r["last_time"]:
+                last_attended = f"{r['last_date']} ({r['last_time']})"
+            else:
+                last_attended = "No record yet"
+
+            students.append({
+                "id": r["id"],
+                "name": r["name"],
+                "roll_number": r["roll_number"],
+                "image_filename": filename,
+                "photo_url": f"http://127.0.0.1:5000/api/students/photo/{filename}" if filename else None,
+                "department": "Computer Science & Engineering",
+                "present_days": p_days,
+                "total_days": total_days,
+                "attendance_percentage": pct,
+                "status_today": r["today_status"] if r["today_status"] else "Absent",
+                "last_attendance_time": last_attended,
+                "created_at": r["created_at"]
+            })
+
+        return jsonify({
+            "success": True,
+            "count": len(students),
+            "students": students
+        }), 200
+
+    except Exception as error:
+        print("Error fetching student list:", error)
+        return jsonify({
+            "success": False,
+            "message": "Unable to fetch student list."
+        }), 500
+
+
+# ==========================================
+# SERVE STUDENT PHOTO
+# ==========================================
+
+@student_bp.route("/photo/<path:filename>", methods=["GET"])
+def get_student_photo(filename):
+
+    try:
+        return send_from_directory(DATASET_FOLDER, filename)
+    except Exception as error:
+        return jsonify({
+            "success": False,
+            "message": "Photo not found."
+        }), 404

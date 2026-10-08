@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Attendance Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>
+        Attendance Dashboard
+    </h1>
+
+    <p>
+        Face Recognition Attendance System
+    </p>
+
+
+    <!-- =====================================
+         DASHBOARD CARDS
+    ====================================== -->
+
+    <div class="dashboard-cards">
+
+        <div class="dashboard-card">
+
+            <h3>
+                Total Students
+            </h3>
+
+            <p
+                id="totalStudents"
+            >
+                0
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                Present Today
+            </h3>
+
+            <p
+                id="presentToday"
+            >
+                0
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-card">
+
+            <h3>
+                Attendance Rate
+            </h3>
+
+            <p>
+                <span id="attendanceRate">
+                    0
+                </span>%
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <br>
+
+
+    <!-- =====================================
+         CONTROLS
+    ====================================== -->
+
+    <button
+        type="button"
+        id="refreshDashboard"
+    >
+        Refresh Dashboard
+    </button>
+
+
+    <button
+        type="button"
+        onclick="location.href='index.html'"
+    >
+        Home
+    </button>
+
+
+    <br><br>
+
+
+    <div
+        id="dashboardMessage"
+    ></div>
+
+
+    <!-- =====================================
+         TODAY'S ATTENDANCE
+    ====================================== -->
+
+    <h2>
+        Today's Attendance
+    </h2>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Roll Number
+                    </th>
+
+                    <th>
+                        Time
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody
+                id="todayAttendanceBody"
+            >
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

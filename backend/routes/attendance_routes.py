@@ -122,3 +122,70 @@ def attendance_percentage(student_id):
             result
 
     }), 200
+
+
+# ==========================================
+# DASHBOARD
+# ==========================================
+
+@attendance_bp.route("/dashboard", methods=["GET"])
+def dashboard():
+
+    from database.db import get_connection
+    from datetime import datetime
+
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    # Total registered students
+    cursor.execute("""
+        SELECT COUNT(*) AS total_students
+        FROM students
+    """)
+
+    total_students = cursor.fetchone()["total_students"]
+
+    # Students present today
+    cursor.execute("""
+        SELECT COUNT(*) AS present_today
+        FROM attendance
+        WHERE attendance_date = ?
+        AND status = 'Present'
+    """, (today,))
+
+    present_today = cursor.fetchone()["present_today"]
+
+    # Attendance rate
+    if total_students > 0:
+        attendance_rate = (present_today / total_students) * 100
+    else:
+        attendance_rate = 0
+
+    # Today's attendance records
+    cursor.execute("""
+        SELECT
+            students.name,
+            students.roll_number,
+            attendance.attendance_time,
+            attendance.status
+        FROM attendance
+        INNER JOIN students
+        ON attendance.student_id = students.id
+        WHERE attendance.attendance_date = ?
+        ORDER BY attendance.attendance_time DESC
+    """, (today,))
+
+    records = cursor.fetchall()
+
+    connection.close()
+
+    return jsonify({
+        "success": True,
+        "date": today,
+        "total_students": total_students,
+        "present_today": present_today,
+        "attendance_rate": round(attendance_rate, 2),
+        "records": [dict(record) for record in records]
+    })

@@ -438,6 +438,18 @@ cd backend
 pip install -r requirements.txt
 </pre>
 
+<h3>6. Configure the UrbanTwin AI API Key (when issued)</h3>
+
+<p>Keep the key on the backend. Set <code>URBANTWIN_AI_API_KEY</code> in the backend process environment before starting Flask. You can copy <code>backend/.env.example</code> as a reference; do not put the real key in frontend files or commit it.</p>
+
+<p><strong>Windows PowerShell:</strong></p>
+<pre>$env:URBANTWIN_AI_API_KEY="your-issued-key"</pre>
+
+<p><strong>Linux / macOS:</strong></p>
+<pre>export URBANTWIN_AI_API_KEY="your-issued-key"</pre>
+
+<p>The Flask app reads this value into <code>app.config["URBANTWIN_AI_API_KEY"]</code>. The actual UrbanTwin API call should be added once its endpoint and authentication requirements are provided.</p>
+
 <hr>
 
 <h2>▶️ Running the Application</h2>

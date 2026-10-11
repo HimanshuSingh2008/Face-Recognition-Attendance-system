@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College Attendance Management System - Administration Portal</title>
+    <title>EDITH Vision - AI-Powered Face Recognition Attendance Management System</title>
     
-    <!-- Standard Clean Inter Typography -->
+    <!-- Standard Clean Inter & JetBrains Mono Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
-    <!-- Enterprise Design System -->
+    <!-- EDITH Vision Design System -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -18,21 +18,24 @@
     <div class="app-layout">
         
         <!-- ==============================================================
-             LEFT SIDEBAR (ENTERPRISE ADMIN NAVIGATION)
+             LEFT SIDEBAR (EDITH VISION NAVIGATION)
              ============================================================== -->
         <aside class="app-sidebar" id="appSidebar">
-            <!-- Brand & Institutional Logo -->
+            <!-- Brand & Aperture Logo -->
             <div class="sidebar-brand">
-                <div class="brand-icon-wrapper">
-                    <!-- Clean Graduation / Institution Icon -->
+                <div class="brand-icon-wrapper" title="EDITH Vision Aperture">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                        <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="12" y1="3" x2="12" y2="7"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                        <line x1="3" y1="12" x2="7" y2="12"></line>
+                        <line x1="17" y1="12" x2="21" y2="12"></line>
                     </svg>
                 </div>
                 <div class="brand-text">
-                    <span class="brand-title">CampusAttend</span>
-                    <span class="brand-badge">Academic Portal</span>
+                    <span class="brand-title">EDITH <span class="brand-title-sub">VISION</span></span>
+                    <span class="brand-badge">AI Attendance System</span>
                 </div>
             </div>
 
@@ -55,7 +58,17 @@
                         <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                         <circle cx="12" cy="13" r="4"></circle>
                     </svg>
-                    <span>Face Recognition</span>
+                    <span>Mark Attendance</span>
+                </button>
+
+                <button type="button" class="nav-item" data-target="view-register" id="navRegister">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    <span>Register Student</span>
                 </button>
 
                 <button type="button" class="nav-item" data-target="view-students" id="navStudents">
@@ -81,26 +94,16 @@
 
                 <div class="nav-section-title">Administration</div>
 
-                <button type="button" class="nav-item" data-target="view-register" id="navRegister">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="8.5" cy="7" r="4"></circle>
-                        <line x1="20" y1="8" x2="20" y2="14"></line>
-                        <line x1="23" y1="11" x2="17" y2="11"></line>
-                    </svg>
-                    <span>Register Student</span>
-                </button>
-
-                <button type="button" class="nav-item" onclick="exportAllRecordsCSV()">
+                <button type="button" class="nav-item" onclick="switchView('view-dashboard'); setTimeout(() => { const el = document.getElementById('analyticsSection'); if(el) el.scrollIntoView({behavior: 'smooth'}); }, 100);">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
                         <line x1="12" y1="20" x2="12" y2="4"></line>
                         <line x1="6" y1="20" x2="6" y2="14"></line>
                     </svg>
-                    <span>Reports & Export</span>
+                    <span>Analytics</span>
                 </button>
 
-                <button type="button" class="nav-item" onclick="showToast('System configuration: SQLite Local DB, Flask Engine 127.0.0.1:5000', 'info')">
+                <button type="button" class="nav-item" onclick="showToast('EDITH Vision • System Active • Connected to SQLite & Flask API at 127.0.0.1:5000', 'info')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="3"></circle>
                         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -112,9 +115,9 @@
             <!-- Bottom User & Status Profile -->
             <div class="sidebar-footer">
                 <div class="user-profile-badge">
-                    <div class="user-avatar">ADM</div>
+                    <div class="user-avatar" title="Himanshu - Administrator">H</div>
                     <div class="user-info">
-                        <span class="user-name">Department Admin</span>
+                        <span class="user-name">Himanshu</span>
                         <span class="user-role">
                             <span class="user-status-dot"></span>
                             <span>System Active</span>
@@ -139,33 +142,33 @@
                         </svg>
                     </button>
                     <div class="page-breadcrumb">
-                        <span>Attendance System</span>
+                        <span>EDITH Vision</span>
                         <span>/</span>
                         <span class="current" id="currentSectionTitle">Dashboard</span>
                     </div>
                 </div>
 
                 <div class="header-right">
-                    <div class="system-status-indicator">
+                    <div class="system-status-indicator" title="Backend Server Connectivity">
                         <span class="status-dot"></span>
                         <span id="apiStatusText">Connected to 127.0.0.1:5000</span>
                     </div>
 
                     <div class="live-clock" id="liveClockDisplay">--:--:--</div>
 
-                    <button type="button" class="btn btn-secondary" id="refreshDashboard" title="Refresh dashboard data">
+                    <button type="button" class="btn btn-secondary" id="refreshDashboard" title="Refresh attendance ledger">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                             <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.19"></path>
                         </svg>
                         <span>Refresh</span>
                     </button>
 
-                    <button type="button" class="btn btn-primary" onclick="switchView('view-camera')">
+                    <button type="button" class="btn btn-primary" onclick="switchView('view-camera')" title="Open live face recognition camera">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                             <circle cx="12" cy="13" r="4"></circle>
                         </svg>
-                        <span>Take Attendance</span>
+                        <span>Mark Attendance</span>
                     </button>
                 </div>
             </header>
@@ -176,37 +179,121 @@
 
             <!-- Page Viewport Content -->
             <div class="content-viewport">
+                <!-- Main Navigation Strip Across Standalone Pages -->
+                <nav class="main-navigation" aria-label="Main navigation">
+                    <a href="index.html">Home</a>
+                    <a href="attendance.html">Mark Attendance</a>
+                    <a href="register.html">Register Student</a>
+                    <a href="dashboard.html" aria-current="page">Dashboard</a>
+                    <a href="records.html">Attendance Records</a>
+                </nav>
                 
                 <!-- ==============================================================
                      VIEW 1: DASHBOARD (OVERVIEW & ANALYTICS)
                      ============================================================== -->
                 <section class="view-section active-view" id="view-dashboard">
-                    <div class="page-header-block">
-                        <div>
-                            <h1 class="page-title">Attendance Overview</h1>
-                            <p class="page-description">Real-time attendance metrics, institutional rate analytics, and today's verification ledger.</p>
+                    
+                    <!-- Refined Campus Hero Banner -->
+                    <div class="campus-hero-banner">
+                        <div class="hero-content">
+                            <div class="hero-pill-badge">
+                                <span>Academic Session 2026–2027</span>
+                                <span>•</span>
+                                <span id="currentDateDisplay">Today's Session</span>
+                            </div>
+                            <h1 class="hero-greeting">Welcome back, Himanshu</h1>
+                            <div class="hero-title">
+                                <strong>EDITH Vision</strong> — AI-Powered Face Recognition Attendance
+                            </div>
+                            <div class="hero-tagline">
+                                "Attendance, engineered intelligently."
+                            </div>
                         </div>
-                        <div class="header-action-group">
-                            <span style="font-size: 0.8rem; color: var(--color-text-muted);" id="currentDateDisplay">Today's Session</span>
-                            <button type="button" class="btn btn-secondary" onclick="exportTodayCSV()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                                    <polyline points="7 10 12 15 17 10"></polyline>
-                                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                                </svg>
-                                <span>Export Today's CSV</span>
-                            </button>
+
+                        <div class="hero-stats-panel">
+                            <div class="hero-stat-row">
+                                <span class="hero-stat-label">Biometric Pipeline</span>
+                                <span class="hero-stat-value">128-D Euclidean</span>
+                            </div>
+                            <div class="hero-stat-row">
+                                <span class="hero-stat-label">Matching Tolerance</span>
+                                <span class="hero-stat-value">0.50 Threshold</span>
+                            </div>
+                            <div class="hero-stat-row">
+                                <span class="hero-stat-label">Campus Station</span>
+                                <span class="hero-stat-value" style="color: #6EE7B7;">Online • Live</span>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 4 ENTERPRISE KPI CARDS (Structured, flat, subtle border) -->
+                    <!-- Quick Actions Strip -->
+                    <div class="quick-actions-bar">
+                        <button type="button" class="quick-action-btn" onclick="switchView('view-camera')">
+                            <div class="quick-action-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                                    <circle cx="12" cy="13" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="quick-action-info">
+                                <span class="quick-action-title">Mark Attendance</span>
+                                <span class="quick-action-desc">Launch camera biometric verify</span>
+                            </div>
+                        </button>
+
+                        <button type="button" class="quick-action-btn" onclick="switchView('view-register')">
+                            <div class="quick-action-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="8.5" cy="7" r="4"></circle>
+                                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                                </svg>
+                            </div>
+                            <div class="quick-action-info">
+                                <span class="quick-action-title">Register Student</span>
+                                <span class="quick-action-desc">Enroll face biometric profile</span>
+                            </div>
+                        </button>
+
+                        <button type="button" class="quick-action-btn" onclick="switchView('view-students')">
+                            <div class="quick-action-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <div class="quick-action-info">
+                                <span class="quick-action-title">Manage Students</span>
+                                <span class="quick-action-desc">View directory & compliance</span>
+                            </div>
+                        </button>
+
+                        <button type="button" class="quick-action-btn" onclick="switchView('view-dashboard'); setTimeout(() => { const el = document.getElementById('analyticsSection'); if(el) el.scrollIntoView({behavior: 'smooth'}); }, 50);">
+                            <div class="quick-action-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
+                            </div>
+                            <div class="quick-action-info">
+                                <span class="quick-action-title">View Analytics</span>
+                                <span class="quick-action-desc">Status distribution & ratios</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- 4 REFINED KPI CARDS (Warm Ivory, Bronze, Green, Red) -->
                     <div class="kpi-grid">
                         
                         <!-- 1. Total Students -->
                         <div class="kpi-card">
                             <div class="kpi-header">
                                 <span class="kpi-label">Total Students</span>
-                                <div class="kpi-icon">
+                                <div class="kpi-icon" title="Enrolled Students">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="9" cy="7" r="4"></circle>
@@ -227,7 +314,7 @@
                         <div class="kpi-card">
                             <div class="kpi-header">
                                 <span class="kpi-label">Present Today</span>
-                                <div class="kpi-icon" style="color: var(--color-success); background-color: var(--color-success-bg);">
+                                <div class="kpi-icon" style="color: var(--color-success); background-color: var(--color-success-bg);" title="Present Today">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <polyline points="20 6 9 17 4 12"></polyline>
                                     </svg>
@@ -245,7 +332,7 @@
                         <div class="kpi-card">
                             <div class="kpi-header">
                                 <span class="kpi-label">Absent Today</span>
-                                <div class="kpi-icon" style="color: var(--color-danger); background-color: var(--color-danger-bg);">
+                                <div class="kpi-icon" style="color: var(--color-danger); background-color: var(--color-danger-bg);" title="Absent Today">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <line x1="18" y1="6" x2="6" y2="18"></line>
                                         <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -264,7 +351,7 @@
                         <div class="kpi-card">
                             <div class="kpi-header">
                                 <span class="kpi-label">Attendance Rate</span>
-                                <div class="kpi-icon" style="color: var(--color-primary); background-color: var(--color-primary-light);">
+                                <div class="kpi-icon" style="color: var(--color-primary); background-color: var(--color-primary-light);" title="Attendance Percentage">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                                     </svg>
@@ -281,8 +368,8 @@
 
                     </div>
 
-                    <!-- ATTENDANCE ANALYTICS SECTION (DATA READABILITY OVER FLASHINESS) -->
-                    <div class="analytics-section-grid">
+                    <!-- ATTENDANCE ANALYTICS SECTION -->
+                    <div class="analytics-section-grid" id="analyticsSection">
                         <!-- Chart: Attendance Verification Distribution -->
                         <div class="panel-card">
                             <div class="panel-header">
@@ -344,8 +431,10 @@
                         <!-- Secondary Info Panel: Operational Metrics -->
                         <div class="panel-card">
                             <div class="panel-header">
-                                <h2 class="panel-title">System Metrics</h2>
-                                <span class="panel-subtitle">Institutional status</span>
+                                <div>
+                                    <h2 class="panel-title">System Metrics</h2>
+                                    <span class="panel-subtitle">Institutional compliance status</span>
+                                </div>
                             </div>
                             <div class="panel-body">
                                 <div class="breakdown-list">
@@ -365,7 +454,7 @@
                                             <span class="breakdown-val" id="totalRecords">0</span>
                                         </div>
                                         <div class="breakdown-bar">
-                                            <div class="breakdown-fill" style="width: 100%; background-color: #64748b;"></div>
+                                            <div class="breakdown-fill" style="width: 100%; background-color: var(--color-secondary-brand);"></div>
                                         </div>
                                     </div>
 
@@ -423,7 +512,7 @@
                                     <tr>
                                         <td colspan="4" class="table-empty-row">
                                             <div class="empty-state-content">
-                                                <div class="spinner-clean" style="border-color: #cbd5e1; border-top-color: var(--color-primary); width: 24px; height: 24px;"></div>
+                                                <div class="spinner-clean" style="border-color: #D9C5B5; border-top-color: var(--color-primary); width: 24px; height: 24px;"></div>
                                                 <span>Loading attendance records...</span>
                                             </div>
                                         </td>
@@ -450,7 +539,7 @@
                         <!-- Camera Card -->
                         <div class="camera-card">
                             <div class="camera-card-header">
-                                <span class="camera-header-title">Live Camera Feed</span>
+                                <span class="camera-header-title">Live Optical Camera Feed</span>
                                 <div class="status-badge present" id="cameraStatusBadge">
                                     <span class="badge-dot"></span>
                                     <span id="cameraStatusLabel">Camera Active</span>
@@ -491,7 +580,7 @@
                         <!-- Recognition Status & Result Readout -->
                         <div class="verification-panel">
                             <div class="camera-card-header">
-                                <span class="camera-header-title">Verification Result</span>
+                                <span class="camera-header-title">Verification Diagnostic</span>
                             </div>
 
                             <!-- Status message callout -->
@@ -652,7 +741,7 @@
                                     <tr>
                                         <td colspan="5" class="table-empty-row">
                                             <div class="empty-state-content">
-                                                <div class="spinner-clean" style="border-color: #cbd5e1; border-top-color: var(--color-primary); width: 24px; height: 24px;"></div>
+                                                <div class="spinner-clean" style="border-color: #D9C5B5; border-top-color: var(--color-primary); width: 24px; height: 24px;"></div>
                                                 <span>Loading attendance ledger...</span>
                                             </div>
                                         </td>
@@ -685,16 +774,36 @@
                                 <form id="enrollmentForm" onsubmit="return false;">
                                     <div class="form-group-clean">
                                         <label for="enrollName">Student Full Name</label>
-                                        <input type="text" id="enrollName" placeholder="e.g. John Doe" autocomplete="off" required>
+                                        <input type="text" id="enrollName" placeholder="e.g. John Wick" autocomplete="off" required>
                                     </div>
 
                                     <div class="form-group-clean">
                                         <label for="enrollRoll">Roll Number / Enrollment ID</label>
-                                        <input type="text" id="enrollRoll" placeholder="e.g. CS2026-042" autocomplete="off" required>
+                                        <input type="text" id="enrollRoll" placeholder="e.g. CU25220338" autocomplete="off" required>
+                                    </div>
+
+                                    <div class="form-group-clean">
+                                        <label for="enrollBranch">Academic Department / Branch</label>
+                                        <select id="enrollBranch" class="filter-select" style="width: 100%;">
+                                            <option value="Computer Science & Engineering" selected>Computer Science & Engineering</option>
+                                            <option value="Civil Engineering">Civil Engineering</option>
+                                            <option value="Electrical Engineering">Electrical Engineering</option>
+                                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group-clean">
+                                        <label for="enrollYear">Academic Year</label>
+                                        <select id="enrollYear" class="filter-select" style="width: 100%;">
+                                            <option value="1st Year (2026–2030)">1st Year (2026–2030)</option>
+                                            <option value="2nd Year (2025–2029)" selected>2nd Year (2025–2029)</option>
+                                            <option value="3rd Year (2024–2028)">3rd Year (2024–2028)</option>
+                                            <option value="4th Year (2023–2027)">4th Year (2023–2027)</option>
+                                        </select>
                                     </div>
 
                                     <div class="status-callout-clean" id="enrollMessage" style="margin-bottom: 16px;">
-                                        <span id="enrollMessageText">Ensure student is looking at camera and click Capture & Register.</span>
+                                        <span id="enrollMessageText">Ensure student is looking at camera and click Capture & Register Face.</span>
                                     </div>
 
                                     <button type="button" class="btn btn-primary" id="captureAndRegisterBtn" style="width: 100%;">
@@ -711,7 +820,7 @@
                         <!-- Camera Preview Card -->
                         <div class="panel-card">
                             <div class="panel-header">
-                                <h2 class="panel-title">Biometric Capture Preview</h2>
+                                <h2 class="panel-title">Biometric Optical Capture Preview</h2>
                             </div>
                             <div class="panel-body">
                                 <div class="camera-feed-viewport" style="max-height: 280px; margin-bottom: 14px;">
@@ -749,5 +858,4 @@
     <!-- Core Interactive Application Controller -->
     <script src="js/dashboard.js"></script>
 </body>
-</html>
 </html>

@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Enrollment - CampusAttend</title>
+    <title>Register Student - EDITH Vision Biometric Enrollment</title>
 
-    <!-- Standard Inter Typography -->
+    <!-- Standard Inter & JetBrains Mono Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-    <!-- Enterprise Design System -->
+    <!-- EDITH Vision Design System -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -19,18 +19,22 @@
         <div class="standalone-content-card" style="max-width: 860px;">
             
             <!-- Top Header & Navigation -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--color-card-border); flex-wrap: wrap; gap: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--color-card-border); flex-wrap: wrap; gap: 12px;">
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <div class="brand-icon-wrapper">
+                    <div class="brand-icon-wrapper" title="EDITH Vision">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="8.5" cy="7" r="4"></circle>
-                            <line x1="20" y1="8" x2="20" y2="14"></line>
-                            <line x1="23" y1="11" x2="17" y2="11"></line>
+                            <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+                            <circle cx="12" cy="12" r="4"></circle>
+                            <line x1="12" y1="3" x2="12" y2="7"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                            <line x1="3" y1="12" x2="7" y2="12"></line>
+                            <line x1="17" y1="12" x2="21" y2="12"></line>
                         </svg>
                     </div>
                     <div>
-                        <h1 style="font-size: 1.15rem; font-weight: 700; color: var(--color-text-primary); margin: 0;">Student Biometric Registration</h1>
+                        <h1 style="font-size: 1.15rem; font-weight: 700; color: var(--color-text-primary); margin: 0;">
+                            EDITH Vision <span style="font-size: 0.85rem; font-weight: 500; color: var(--color-primary);">Biometric Registration</span>
+                        </h1>
                         <p style="font-size: 0.8rem; color: var(--color-text-muted); margin: 0;">Enroll student credentials and capture optical face data</p>
                     </div>
                 </div>
@@ -54,6 +58,15 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Main Navigation Strip -->
+            <nav class="main-navigation" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="attendance.html">Mark Attendance</a>
+                <a href="register.html" aria-current="page">Register Student</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="records.html">Attendance Records</a>
+            </nav>
 
             <!-- FEEDBACK MESSAGE (Preserving ID) -->
             <div id="message" class="status-callout" aria-live="polite" style="margin-bottom: 20px;">
@@ -81,16 +94,36 @@
                     <div>
                         <div class="form-group-clean">
                             <label for="name">Student Full Name</label>
-                            <input type="text" id="name" placeholder="e.g. Alex Morgan" autocomplete="off">
+                            <input type="text" id="name" placeholder="e.g. John Wick" autocomplete="off" required>
                         </div>
 
                         <div class="form-group-clean">
                             <label for="roll">Roll Number / Student ID</label>
-                            <input type="text" id="roll" placeholder="e.g. CS2026-088" autocomplete="off">
+                            <input type="text" id="roll" placeholder="e.g. CU25220338" autocomplete="off" required>
+                        </div>
+
+                        <div class="form-group-clean">
+                            <label for="studentBranch">Department / Branch</label>
+                            <select id="studentBranch" class="filter-select" style="width: 100%;">
+                                <option value="Computer Science & Engineering" selected>Computer Science & Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Electrical Engineering">Electrical Engineering</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group-clean">
+                            <label for="studentYear">Academic Year</label>
+                            <select id="studentYear" class="filter-select" style="width: 100%;">
+                                <option value="1st Year (2026–2030)">1st Year (2026–2030)</option>
+                                <option value="2nd Year (2025–2029)" selected>2nd Year (2025–2029)</option>
+                                <option value="3rd Year (2024–2028)">3rd Year (2024–2028)</option>
+                                <option value="4th Year (2023–2027)">4th Year (2023–2027)</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div>
+                    <div style="margin-top: 10px;">
                         <button type="button" class="btn btn-primary" id="capture" style="width: 100%; margin-bottom: 10px;">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
@@ -143,10 +176,14 @@
                 </div>
             </div>
 
+            <div style="margin-top: 24px; padding-top: 14px; border-top: 1px solid var(--color-card-border); text-align: center; font-size: 0.75rem; color: var(--color-text-muted);">
+                EDITH Vision • Biometric Enrollment Station • Encrypted Biometric Features
+            </div>
+
         </div>
     </div>
 
-    <!-- Core Registration Logic -->
+    <!-- Core Registration Logic (Unmodified) -->
     <script src="js/register.js"></script>
 </body>
 </html>

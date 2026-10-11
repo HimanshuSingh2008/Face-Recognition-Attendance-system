@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 
@@ -13,6 +15,10 @@ from routes.recognition_routes import (
 
 
 app = Flask(__name__)
+
+# Keep provider credentials on the server. Set URBANTWIN_AI_API_KEY in the
+# backend process environment when UrbanTwin issues the key.
+app.config["URBANTWIN_AI_API_KEY"] = os.getenv("URBANTWIN_AI_API_KEY", "")
 
 CORS(app)
 

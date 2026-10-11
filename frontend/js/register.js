@@ -128,14 +128,26 @@ async function registerStudent() {
         return;
     }
 
-    if (name.length < 2) {
-        showMessage("Student name must contain at least 2 characters.", "error");
+    if (name.length < 2 || name.length > 100) {
+        showMessage("Student name must contain 2–100 characters.", "error");
+        nameInput.focus();
+        return;
+    }
+
+    if (!/^[\p{L}\p{M} .'-]+$/u.test(name)) {
+        showMessage("Name can contain letters, spaces, apostrophes, dots, and hyphens only.", "error");
         nameInput.focus();
         return;
     }
 
     if (!roll) {
         showMessage("Student roll number is required.", "error");
+        rollInput.focus();
+        return;
+    }
+
+    if (roll.length > 30 || !/^[A-Za-z0-9/_-]+$/.test(roll)) {
+        showMessage("Enter a valid roll number using letters, numbers, hyphens, underscores, or slashes.", "error");
         rollInput.focus();
         return;
     }

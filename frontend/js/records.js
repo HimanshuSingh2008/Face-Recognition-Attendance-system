@@ -90,28 +90,46 @@ function renderRecordsTable(records) {
         return sortAsc ? valA.localeCompare(valB) : valB.localeCompare(valA);
     });
 
-    sorted.forEach(record => {
-        const tr = document.createElement("tr");
-        const initials = getInitials(record.name);
-        const isPresent = (record.status || "Present") === "Present";
+    const fragment = document.createDocumentFragment();
 
-        tr.innerHTML = `
-            <td class="name-cell">
-                <div class="table-student-avatar">${initials}</div>
-                <span>${escapeHtml(record.name)}</span>
-            </td>
-            <td class="mono-cell">${escapeHtml(record.roll_number)}</td>
-            <td class="mono-cell" style="color: var(--text-secondary);">${escapeHtml(record.attendance_date)}</td>
-            <td class="mono-cell" style="color: var(--text-secondary);">${escapeHtml(record.attendance_time)}</td>
-            <td>
-                <span class="status-pill ${isPresent ? 'present' : 'absent'}">
-                    <span class="pulse-dot"></span>
-                    <span>${escapeHtml(record.status || "Present")}</span>
-                </span>
-            </td>
-        `;
-        tableBody.appendChild(tr);
+    sorted.forEach(record => {
+        const row = document.createElement("tr");
+        const name = displayValue(record.name);
+        const status = displayValue(record.status, "Present");
+        const nameCell = document.createElement("td");
+        nameCell.className = "name-cell";
+
+        const avatar = document.createElement("div");
+        avatar.className = "table-student-avatar";
+        avatar.textContent = getInitials(name);
+
+        const nameText = document.createElement("span");
+        nameText.textContent = name;
+        nameCell.append(avatar, nameText);
+        row.appendChild(nameCell);
+
+        [record.roll_number, record.attendance_date, record.attendance_time].forEach(value => {
+            const cell = document.createElement("td");
+            cell.className = "mono-cell";
+            cell.textContent = displayValue(value);
+            row.appendChild(cell);
+        });
+
+        const statusCell = document.createElement("td");
+        const statusPill = document.createElement("span");
+        statusPill.className = `status-pill ${status === "Present" ? "present" : "absent"}`;
+
+        const statusDot = document.createElement("span");
+        statusDot.className = "pulse-dot";
+        const statusText = document.createElement("span");
+        statusText.textContent = status;
+        statusPill.append(statusDot, statusText);
+        statusCell.appendChild(statusPill);
+        row.appendChild(statusCell);
+        fragment.appendChild(row);
     });
+
+    tableBody.appendChild(fragment);
 }
 
 function sortTable(key) {
@@ -158,6 +176,10 @@ function getInitials(name) {
         return (parts[0][0] + parts[1][0]).toUpperCase();
     }
     return name.slice(0, 2).toUpperCase();
+}
+
+function displayValue(value, fallback = "") {
+    return value === null || value === undefined ? fallback : String(value);
 }
 
 function escapeHtml(text) {

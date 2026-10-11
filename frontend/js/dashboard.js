@@ -229,22 +229,35 @@ if (menuToggleBtn && appSidebar) {
 // 5. DASHBOARD DATA & ANALYTICS CHARTS
 // ==========================================================================
 async function loadDashboard() {
-    if (dashboardMessage) dashboardMessage.innerText = "Loading attendance data...";
+    if (dashboardMessage) {
+        dashboardMessage.textContent = "Loading attendance data...";
+        dashboardMessage.className = "processing";
+    }
+    if (refreshButton) refreshButton.disabled = true;
 
     try {
         const response = await fetch(DASHBOARD_API);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
+        let data;
 
-        if (!data.success) {
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error("The server returned an invalid response.");
+        }
+
+        if (!response.ok || data.success !== true) {
+            if (!response.ok) {
+                throw new Error(data.message || `Request failed with status ${response.status}.`);
+            }
             throw new Error(data.message || "Failed to load dashboard data.");
         }
 
-        const total = data.total_students || 0;
-        const present = data.present_today || 0;
+        const total = data.total_students ?? 0;
+        const present = data.present_today ?? 0;
         const absent = (typeof data.absent_today !== "undefined") ? data.absent_today : Math.max(0, total - present);
         const rate = (typeof data.attendance_rate !== "undefined") ? data.attendance_rate : (total > 0 ? ((present / total) * 100).toFixed(1) : 0);
-        const recordsCount = data.total_records || (data.records ? data.records.length : 0);
+        const records = Array.isArray(data.records) ? data.records : [];
+        const recordsCount = data.total_records ?? records.length;
 
         // Update KPI values
         if (totalStudents) totalStudents.innerText = total.toLocaleString();
@@ -285,13 +298,16 @@ async function loadDashboard() {
         if (metricComplianceBar) metricComplianceBar.style.width = `${Math.min(100, rate)}%`;
 
         // Render Today's Attendance Table
-        cachedTodayRecords = data.records || [];
+        cachedTodayRecords = records;
         renderTodayTable(cachedTodayRecords);
 
         const apiStatus = document.getElementById("apiStatusText");
         if (apiStatus) apiStatus.innerText = "System Ready • Connected";
 
-        if (dashboardMessage) dashboardMessage.innerText = "Updated successfully.";
+        if (dashboardMessage) {
+            dashboardMessage.textContent = "Updated successfully.";
+            dashboardMessage.className = "success";
+        }
     } catch (err) {
         console.error("Dashboard Load Error:", err);
         const apiStatus = document.getElementById("apiStatusText");
@@ -310,6 +326,14 @@ async function loadDashboard() {
                 </tr>
             `;
         }
+        if (dashboardMessage) {
+            dashboardMessage.textContent = err.name === "TypeError"
+                ? "Unable to connect to the server. Check whether Flask is running."
+                : err.message;
+            dashboardMessage.className = "error";
+        }
+    } finally {
+        if (refreshButton) refreshButton.disabled = false;
     }
 }
 
